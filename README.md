@@ -1,3 +1,2 @@
-# KPIlabs2025
-Some of the tasks are implemented into my coursework (see raijin repository)
-I just copy and pasted them here to keep everything clean and organized. 
+Some of the tasks are implemented as part of my main coursework project.
+To keep everything clean and modular, I've copied them here into a dedicated space for organization purposes. 
