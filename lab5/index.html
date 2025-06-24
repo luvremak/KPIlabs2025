@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 5</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Task 5</h1>
+        
+        <label for="arrayInput">Input Array (comma-separated numbers):</label>
+        <input type="text" id="arrayInput" value="1,2,3,4,5,6,7,8,9,10" placeholder="1,2,3,4,5">
+        
+        <label for="filterType">Filter Type:</label>
+        <select id="filterType">
+            <option value="even">Even Numbers</option>
+            <option value="odd">Odd Numbers</option>
+            <option value="greaterThan">Greater Than Value</option>
+            <option value="lessThan">Less Than Value</option>
+        </select>
+        
+        <div id="valueInput" style="display: none;">
+            <label for="threshold">Threshold Value:</label>
+            <input type="number" id="threshold" value="5">
+        </div>
+        
+        <label for="variant">Async Variant:</label>
+        <select id="variant">
+            <option value="callback">Callback-based</option>
+            <option value="promise">Promise-based (concurrent)</option>
+            <option value="sequential">Sequential Promise</option>
+            <option value="batched">Batched Concurrent</option>
+            <option value="abortable">Abortable</option>
+        </select>
+        
+        <div id="batchSizeInput" style="display: none;">
+            <label for="batchSize">Batch Size:</label>
+            <input type="number" id="batchSize" value="3" min="1">
+        </div>
+        
+        <button id="runButton">Run Filter</button>
+        <button id="abortButton" style="display: none;">Abort Operation</button>
+        
+        <label for="output">Output:</label>
+        <div id="output"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

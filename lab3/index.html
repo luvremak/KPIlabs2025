@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Task 3</h1>
+        </div>
+
+        <div class="main-content">
+            <div class="config-panel">
+                <h3>Configuration</h3>
+                
+                <div class="form-group">
+                    <label for="testFunction">Test Function:</label>
+                    <select id="testFunction">
+                        <option value="fibonacci">Fibonacci (Recursive)</option>
+                        <option value="factorial">Factorial</option>
+                        <option value="expensiveCalc">Expensive Calculation</option>
+                        <option value="fibonacci_iter">Fibonacci (Iterative)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="evictionPolicy">Eviction Policy:</label>
+                    <select id="evictionPolicy">
+                        <option value="LRU">Least Recently Used (LRU)</option>
+                        <option value="LFU">Least Frequently Used (LFU)</option>
+                        <option value="TIME">Time-Based Expiry</option>
+                        <option value="CUSTOM">Custom Policy</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="maxSize">Max Cache Size:</label>
+                    <input type="number" id="maxSize" value="10" min="1" max="100">
+                </div>
+
+                <div class="form-group" id="expiryTimeGroup" style="display: none;">
+                    <label for="expiryTime">Expiry Time (ms):</label>
+                    <input type="number" id="expiryTime" value="5000" min="1000">
+                </div>
+
+                <div class="form-group">
+                    <label for="testInput">Test Input (comma-separated):</label>
+                    <input type="text" id="testInput" value="5,8,3,10,5,8,12,3,7,15" placeholder="e.g., 5,8,3,10">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="runSingleTest()">Run Test</button>
+                </div>
+                
+                <div class="button-group" style="margin-top: 10px;">
+                    <button class="btn-danger" onclick="clearCache()">Clear Cache</button>
+                    <button class="btn-secondary" onclick="clearResults()">Clear Results</button>
+                </div>
+            </div>
+
+            <div class="results-panel">
+                <h3>Performance Metrics</h3>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="cacheHits">0</div>
+                        <div class="stat-label">Cache Hits</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="cacheMisses">0</div>
+                        <div class="stat-label">Cache Misses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="hitRatio">0%</div>
+                        <div class="stat-label">Hit Ratio</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="cacheSize">0</div>
+                        <div class="stat-label">Cache Size</div>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <div class="output-tabs">
+                        <div class="tab active" onclick="showTab('results')">Results</div>
+                        <div class="tab" onclick="showTab('cache')">Cache State</div>
+                        <div class="tab" onclick="showTab('performance')">Performance</div>
+                    </div>
+
+                    <div id="results-content" class="tab-content active">
+                        <div class="output" id="results"></div>
+                    </div>
+
+                    <div id="cache-content" class="tab-content">
+                        <div class="cache-visualization" id="cacheViz">
+                            <p>Cache entries will appear here...</p>
+                        </div>
+                    </div>
+
+                    <div id="performance-content" class="tab-content">
+                        <div class="output" id="performance"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 8</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Task 8</h1>
+    
+    <div id="config-section">
+        <h2>Configuration</h2>
+        
+        <div>
+            <label for="auth-strategy">Authentication Strategy:</label>
+            <select id="auth-strategy">
+                <option value="apikey">API Key</option>
+                <option value="bearer">Bearer Token</option>
+                <option value="jwt">JWT</option>
+                <option value="oauth">OAuth</option>
+            </select>
+        </div>
+        
+        <div id="auth-config">
+            <h3>Authentication Configuration</h3>
+
+            <div id="apikey-config" class="auth-config-panel">
+                <div>
+                    <label for="api-key">API Key:</label>
+                    <input type="text" id="api-key" placeholder="Enter your API key">
+                </div>
+                <div>
+                    <label for="api-header-name">Header Name:</label>
+                    <input type="text" id="api-header-name" value="X-API-Key" placeholder="X-API-Key">
+                </div>
+                <div>
+                    <label for="api-query-param">Query Parameter (optional):</label>
+                    <input type="text" id="api-query-param" placeholder="api_key">
+                </div>
+            </div>
+
+            <div id="bearer-config" class="auth-config-panel" style="display: none;">
+                <div>
+                    <label for="bearer-token">Bearer Token:</label>
+                    <input type="text" id="bearer-token" placeholder="Enter your bearer token">
+                </div>
+            </div>
+
+            <div id="jwt-config" class="auth-config-panel" style="display: none;">
+                <div>
+                    <label for="jwt-token">JWT Token:</label>
+                    <textarea id="jwt-token" rows="3" placeholder="Enter your JWT token"></textarea>
+                </div>
+                <div>
+                    <label for="jwt-refresh-token">Refresh Token (optional):</label>
+                    <input type="text" id="jwt-refresh-token" placeholder="Enter refresh token">
+                </div>
+                <div>
+                    <label for="jwt-refresh-url">Refresh URL (optional):</label>
+                    <input type="text" id="jwt-refresh-url" placeholder="https://api.example.com/auth/refresh">
+                </div>
+            </div>
+
+            <div id="oauth-config" class="auth-config-panel" style="display: none;">
+                <div>
+                    <label for="oauth-client-id">Client ID:</label>
+                    <input type="text" id="oauth-client-id" placeholder="Enter client ID">
+                </div>
+                <div>
+                    <label for="oauth-client-secret">Client Secret:</label>
+                    <input type="text" id="oauth-client-secret" placeholder="Enter client secret">
+                </div>
+                <div>
+                    <label for="oauth-token-url">Token URL:</label>
+                    <input type="text" id="oauth-token-url" placeholder="https://api.example.com/oauth/token">
+                </div>
+                <div>
+                    <label for="oauth-access-token">Access Token (if available):</label>
+                    <input type="text" id="oauth-access-token" placeholder="Current access token">
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <h3>Rate Limiting</h3>
+            <div>
+                <label for="rate-limit-max">Max Requests:</label>
+                <input type="number" id="rate-limit-max" value="100" min="1">
+            </div>
+            <div>
+                <label for="rate-limit-window">Window (ms):</label>
+                <input type="number" id="rate-limit-window" value="60000" min="1000">
+            </div>
+        </div>
+        
+        <button id="configure-proxy">Configure Proxy</button>
+    </div>
+    
+    <div id="request-section">
+        <h2>Make Request</h2>
+        
+        <div>
+            <label for="request-url">Request URL:</label>
+            <input type="text" id="request-url" placeholder="https://api.example.com/data" value="https://httpbin.org/headers">
+        </div>
+        
+        <div>
+            <label for="request-method">Method:</label>
+            <select id="request-method">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="DELETE">DELETE</option>
+                <option value="PATCH">PATCH</option>
+            </select>
+        </div>
+        
+        <div>
+            <label for="request-headers">Additional Headers (JSON):</label>
+            <textarea id="request-headers" rows="3" placeholder='{"Content-Type": "application/json"}'></textarea>
+        </div>
+        
+        <div>
+            <label for="request-body">Request Body:</label>
+            <textarea id="request-body" rows="4" placeholder="Request body (for POST, PUT, PATCH)"></textarea>
+        </div>
+        
+        <button id="make-request">Make Request</button>
+    </div>
+    
+    <div id="status-section">
+        <h2>Status & Monitoring</h2>
+        
+        <div id="rate-limit-status">
+            <h3>Rate Limit Status</h3>
+            <div id="rate-limit-info">Not configured</div>
+        </div>
+        
+        <div id="proxy-stats">
+            <h3>Proxy Statistics</h3>
+            <div id="stats-info">No requests made yet</div>
+        </div>
+        
+        <button id="refresh-status">Refresh Status</button>
+        <button id="clear-logs">Clear Logs</button>
+    </div>
+    
+    <div id="response-section">
+        <h2>Response</h2>
+        <div id="response-container">
+            <pre id="response-output">No response yet</pre>
+        </div>
+    </div>
+    
+    <div id="logs-section">
+        <h2>Request Logs</h2>
+        <div id="logs-container">
+            <pre id="logs-output">No logs yet</pre>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        let authProxy = null;
+
+        const authStrategySelect = document.getElementById('auth-strategy');
+        const configureBtn = document.getElementById('configure-proxy');
+        const makeRequestBtn = document.getElementById('make-request');
+        const refreshStatusBtn = document.getElementById('refresh-status');
+        const clearLogsBtn = document.getElementById('clear-logs');
+        
+        const responseOutput = document.getElementById('response-output');
+        const logsOutput = document.getElementById('logs-output');
+        const rateLimitInfo = document.getElementById('rate-limit-info');
+        const statsInfo = document.getElementById('stats-info');
+
+        authStrategySelect.addEventListener('change', function() {
+            const panels = document.querySelectorAll('.auth-config-panel');
+            panels.forEach(panel => panel.style.display = 'none');
+            
+            const selectedPanel = document.getElementById(this.value + '-config');
+            if (selectedPanel) {
+                selectedPanel.style.display = 'block';
+            }
+        });
+
+        configureBtn.addEventListener('click', function() {
+            try {
+                const rateLimitConfig = {
+                    maxRequests: parseInt(document.getElementById('rate-limit-max').value) || 100,
+                    windowMs: parseInt(document.getElementById('rate-limit-window').value) || 60000
+                };
+                
+                authProxy = createAuthProxy({ rateLimit: rateLimitConfig });
+                
+                const strategy = authStrategySelect.value;
+                const config = getAuthConfig(strategy);
+                
+                authProxy.setAuthStrategy(strategy, config);
+                
+                responseOutput.textContent = 'Proxy configured successfully!';
+                updateStatus();
+                
+            } catch (error) {
+                responseOutput.textContent = `Configuration error: ${error.message}`;
+            }
+        });
+
+        makeRequestBtn.addEventListener('click', async function() {
+            if (!authProxy) {
+                responseOutput.textContent = 'Please configure the proxy first!';
+                return;
+            }
+            
+            try {
+                const url = document.getElementById('request-url').value;
+                const method = document.getElementById('request-method').value;
+                const headersText = document.getElementById('request-headers').value;
+                const bodyText = document.getElementById('request-body').value;
+                
+                const options = {
+                    method: method,
+                    headers: {}
+                };
+
+                if (headersText) {
+                    try {
+                        options.headers = JSON.parse(headersText);
+                    } catch (e) {
+                        throw new Error('Invalid JSON in headers');
+                    }
+                }
+
+                if (['POST', 'PUT', 'PATCH'].includes(method) && bodyText) {
+                    options.body = bodyText;
+                    if (!options.headers['Content-Type']) {
+                        options.headers['Content-Type'] = 'application/json';
+                    }
+                }
+                
+                responseOutput.textContent = 'Making request...';
+                
+                const response = await authProxy.proxyRequest(url, options);
+                
+                responseOutput.textContent = JSON.stringify({
+                    status: response.status,
+                    statusText: response.statusText,
+                    headers: response.headers,
+                    data: response.data
+                }, null, 2);
+                
+                updateStatus();
+                updateLogs();
+                
+            } catch (error) {
+                responseOutput.textContent = `Request error: ${error.message}`;
+                updateLogs();
+            }
+        });
+
+        refreshStatusBtn.addEventListener('click', function() {
+            updateStatus();
+            updateLogs();
+        });
+
+        clearLogsBtn.addEventListener('click', function() {
+            if (authProxy) {
+                authProxy.logger.clearLogs();
+                updateLogs();
+                updateStatus();
+            }
+        });
+
+        function getAuthConfig(strategy) {
+            switch (strategy) {
+                case 'apikey':
+                    return {
+                        apiKey: document.getElementById('api-key').value,
+                        headerName: document.getElementById('api-header-name').value || 'X-API-Key',
+                        queryParam: document.getElementById('api-query-param').value || null
+                    };
+                    
+                case 'bearer':
+                    return {
+                        token: document.getElementById('bearer-token').value
+                    };
+                    
+                case 'jwt':
+                    return {
+                        token: document.getElementById('jwt-token').value,
+                        refreshToken: document.getElementById('jwt-refresh-token').value || null,
+                        refreshUrl: document.getElementById('jwt-refresh-url').value || null
+                    };
+                    
+                case 'oauth':
+                    return {
+                        clientId: document.getElementById('oauth-client-id').value,
+                        clientSecret: document.getElementById('oauth-client-secret').value,
+                        tokenUrl: document.getElementById('oauth-token-url').value,
+                        accessToken: document.getElementById('oauth-access-token').value || null
+                    };
+                    
+                default:
+                    return {};
+            }
+        }
+
+        function updateStatus() {
+            if (!authProxy) {
+                rateLimitInfo.textContent = 'Proxy not configured';
+                statsInfo.textContent = 'Proxy not configured';
+                return;
+            }
+            
+            const rateLimitStatus = authProxy.getRateLimitStatus();
+            rateLimitInfo.innerHTML = `
+                Current: ${rateLimitStatus.current}/${rateLimitStatus.max} requests
+                Window: ${rateLimitStatus.windowMs}ms
+                Reset: ${new Date(rateLimitStatus.resetTime).toLocaleTimeString()}
+            `;
+            
+            const stats = authProxy.getStats();
+            statsInfo.innerHTML = `
+                Strategy: ${stats.currentStrategy}
+                Total Requests: ${stats.logStats.totalRequests}
+                Successful: ${stats.logStats.successfulRequests}
+                Failed: ${stats.logStats.failedRequests}
+                Auth Errors: ${stats.logStats.authErrors}
+            `;
+        }
+
+        function updateLogs() {
+            if (!authProxy) {
+                logsOutput.textContent = 'No logs available';
+                return;
+            }
+            
+            const logs = authProxy.logger.getLogs(20);
+            if (logs.length === 0) {
+                logsOutput.textContent = 'No logs yet';
+                return;
+            }
+            
+            const logText = logs.map(log => {
+                let entry = `[${log.timestamp}] ${log.level.toUpperCase()}`;
+                if (log.type === 'request') {
+                    entry += `: ${log.method} ${log.url}`;
+                } else if (log.type === 'response') {
+                    entry += `: ${log.status} ${log.statusText}`;
+                } else if (log.type === 'error') {
+                    entry += `: ${log.error}`;
+                } else {
+                    entry += `: ${log.message}`;
+                }
+                return entry;
+            }).join('\n');
+            
+            logsOutput.textContent = logText;
+        }
+
+        updateStatus();
+    </script>
+</body>
+</html>

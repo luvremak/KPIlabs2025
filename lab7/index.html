@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 7</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Task 7</h1>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <h3>Chat System</h3>
+                <input type="text" id="chatInput" placeholder="Enter message...">
+                <button onclick="sendChatMessage()">Send Message</button>
+                <button onclick="toggleChatBot()">Toggle ChatBot</button>
+                <button onclick="toggleModerator()">Toggle Moderator</button>
+            </div>
+
+            <div class="control-group">
+                <h3>E-commerce Events</h3>
+                <input type="text" id="productInput" placeholder="Product name...">
+                <input type="number" id="priceInput" placeholder="Price..." min="0" step="0.01">
+                <button onclick="addToCart()">Add to Cart</button>
+                <button onclick="makeOrder()">Place Order</button>
+                <button onclick="toggleInventory()">Toggle Inventory System</button>
+                <button onclick="toggleAnalytics()">Toggle Analytics</button>
+            </div>
+
+            <div class="control-group">
+                <h3>Game Events</h3>
+                <button onclick="playerJoin()">Player Join</button>
+                <button onclick="playerMove()">Player Move</button>
+                <button onclick="playerAttack()">Player Attack</button>
+                <button onclick="toggleGameUI()">Toggle Game UI</button>
+                <button onclick="toggleSoundSystem()">Toggle Sound System</button>
+            </div>
+        </div>
+
+        <div class="output-panels">
+            <div class="panel">
+                <h3>Chat Messages</h3>
+                <div id="chatOutput" class="output"></div>
+            </div>
+            
+            <div class="panel">
+                <h3>System Notifications</h3>
+                <div id="systemOutput" class="output"></div>
+            </div>
+            
+            <div class="panel">
+                <h3>Analytics & Logs</h3>
+                <div id="analyticsOutput" class="output"></div>
+            </div>
+        </div>
+
+        <div class="subscribers-panel">
+            <h3>Active Subscribers</h3>
+            <div id="subscribersStatus"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

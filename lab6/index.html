@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 6</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Task 6</h1>
+        </header>
+
+        <main>
+            <section class="demo-section">
+                <h2>Real-time Data Processing</h2>
+                <div class="controls">
+                    <button id="startProcessing" class="btn btn-primary">Start Processing 50,000 Records</button>
+                    <button id="filterData" class="btn btn-secondary">Filter High Scores</button>
+                    <button id="processCSV" class="btn btn-tertiary">Process CSV Data</button>
+                    <button id="clearOutput" class="btn btn-clear">Clear Output</button>
+                </div>
+            </section>
+
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Records Processed</h3>
+                        <div id="recordCount" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Average Score</h3>
+                        <div id="avgScore" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Max Score</h3>
+                        <div id="maxScore" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Memory Usage</h3>
+                        <div id="memoryUsage" class="stat-value">Constant</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+            </section>
+
+            <section class="output-section">
+                <h2>Processing Output</h2>
+                <div id="output" class="output-container">
+                    <p class="placeholder">Click a button above to start processing...</p>
+                </div>
+            </section>
+
+            <section class="info-section">
+                <h2>How it Works</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Async Generators</h3>
+                        <p>Generate data on-demand without storing everything in memory</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Stream Processing</h3>
+                        <p>Process one record at a time with real-time aggregation</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Memory Efficient</h3>
+                        <p>Constant memory usage regardless of dataset size</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Non-blocking</h3>
+                        <p>Yields control to prevent UI freezing</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

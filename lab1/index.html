@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Task 1</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Task 1</h1>
+
+    <label for="generatorType">Select Generator Type:</label>
+    <select id="generatorType">
+      <option value="roundRobin">Round Robin</option>
+      <option value="fibonacci">Fibonacci</option>
+      <option value="randomNumber">Random Number</option>
+      <option value="days">Days</option>
+      <option value="colors">Colors</option>
+    </select>
+
+    <br><br>
+
+    <label for="timeout">Timeout (seconds):</label>
+    <input type="number" id="timeout" value="5" min="1" />
+
+    <br><br>
+
+    <button id="startBtn">Start Generator</button>
+
+    <div id="output"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
